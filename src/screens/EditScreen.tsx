@@ -9,16 +9,17 @@ interface EditScreenProps {
   navigation: NavigationScreenProp<any, any>;
 }
 const EditScreen = ({ navigation }: EditScreenProps) => {
-  const { state } = useContext(Context);
+  const id = navigation.getParam("id");
+  const { state, editBlogPost } = useContext(Context);
 
   const blogPost = state.find(
-    (blogPost: BlogPost) => blogPost.id === navigation.getParam("id")
+    (blogPost: BlogPost) => blogPost.id === id
   );
 
   return (
     <BlogPostForm
       initialValues={{ title: blogPost.title, content: blogPost.content }}
-      onSubmit={(title: string, content: string) => null}
+      onSubmit={(title: string, content: string) => editBlogPost(id, title, content, () => navigation.goBack())}
     />
   );
 };
